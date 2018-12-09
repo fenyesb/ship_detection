@@ -1,1 +1,0 @@
-<annotation><folder>crop/images/</folder><filename>774680fd3_18.jpg</filename><size><width>81</width><height>161</height><depth>3</depth></size><segmented>0</segmented><object><name>ship</name><pose>Unspecified</pose><truncated>0</truncated><difficult>0</difficult><bndbox><xmin>52</xmin><ymin>9</ymin><xmax>81</xmax><ymax>38</ymax></bndbox></object></annotation>

@@ -1,1 +1,0 @@
-<annotation><folder>crop/images/</folder><filename>dc5a768dd_22.jpg</filename><size><width>122</width><height>242</height><depth>3</depth></size><segmented>0</segmented><object><name>ship</name><pose>Unspecified</pose><truncated>0</truncated><difficult>0</difficult><bndbox><xmin>6</xmin><ymin>35</ymin><xmax>77</xmax><ymax>240</ymax></bndbox></object></annotation>

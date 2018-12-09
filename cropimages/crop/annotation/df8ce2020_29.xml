@@ -1,1 +1,0 @@
-<annotation><folder>crop/images/</folder><filename>df8ce2020_29.jpg</filename><size><width>400</width><height>264</height><depth>3</depth></size><segmented>0</segmented><object><name>ship</name><pose>Unspecified</pose><truncated>0</truncated><difficult>0</difficult><bndbox><xmin>300</xmin><ymin>29</ymin><xmax>399</xmax><ymax>130</ymax></bndbox></object></annotation>

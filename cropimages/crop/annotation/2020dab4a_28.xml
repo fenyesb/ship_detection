@@ -1,1 +1,0 @@
-<annotation><folder>crop/images/</folder><filename>2020dab4a_28.jpg</filename><size><width>254</width><height>322</height><depth>3</depth></size><segmented>0</segmented><object><name>ship</name><pose>Unspecified</pose><truncated>0</truncated><difficult>0</difficult><bndbox><xmin>10</xmin><ymin>160</ymin><xmax>188</xmax><ymax>321</ymax></bndbox></object></annotation>
