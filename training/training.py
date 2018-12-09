@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+#We modified the ssd_keras/ssd300_inference.ipynb
+
+#load the libraries
 from keras.optimizers import Adam, SGD
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler, TerminateOnNaN, CSVLogger
 from keras import backend as K
@@ -30,10 +33,12 @@ img_width = 300 # Width of the model input images
 img_channels = 3 # Number of color channels of the model input images
 mean_color = [123, 117, 104] # The per-channel mean of the images in the dataset. Do not change this value if you're using any of the pre-trained weights.
 swap_channels = [2, 1, 0] # The color channel order in the original SSD is BGR, so we'll have the model reverse the color channel order of the input images.
+
+#We changed the n_classes to 1, because we only have 1 class (ship)
 n_classes = 1 # Number of positive classes, e.g. 20 for Pascal VOC, 80 for MS COCO
 scales_pascal = [0.1, 0.2, 0.37, 0.54, 0.71, 0.88, 1.05] # The anchor box scaling factors used in the original SSD300 for the Pascal VOC datasets
 scales_coco = [0.07, 0.15, 0.33, 0.51, 0.69, 0.87, 1.05] # The anchor box scaling factors used in the original SSD300 for the MS COCO datasets
-scales = scales_pascal
+scales = scales_coco
 aspect_ratios = [[1.0, 2.0, 0.5],
                  [1.0, 2.0, 0.5, 3.0, 1.0/3.0],
                  [1.0, 2.0, 0.5, 3.0, 1.0/3.0],
@@ -84,27 +89,13 @@ sgd = SGD(lr=0.001, momentum=0.9, decay=0.0, nesterov=False)
 ssd_loss = SSDLoss(neg_pos_ratio=3, alpha=1.0)
 
 model.compile(optimizer=sgd, loss=ssd_loss.compute_loss)
-'''
 
-# TODO: Set the path to the `.h5` file of the model to be loaded.
-model_path = 'ShipDetection_trasfered_from_VGG_coco_SSD_300x300_iter_400000.h5'
-
-# We need to create an SSDLoss object in order to pass that to the model loader.
-ssd_loss = SSDLoss(neg_pos_ratio=3, alpha=1.0)
-
-K.clear_session() # Clear previous models from memory.
-
-model = load_model(model_path, custom_objects={'AnchorBoxes': AnchorBoxes,
-                                               'L2Normalization': L2Normalization,
-                                               'compute_loss': ssd_loss.compute_loss})
-
-'''
 # 1: Instantiate two `DataGenerator` objects: One for training, one for validation.
 
 # Optional: If you have enough memory, consider loading the images into memory for the reasons explained above.
 
-train_dataset = DataGenerator(load_images_into_memory=False, hdf5_dataset_path=None)
-val_dataset = DataGenerator(load_images_into_memory=False, hdf5_dataset_path=None)
+train_dataset = DataGenerator(load_images_into_memory=True, hdf5_dataset_path=None)
+val_dataset = DataGenerator(load_images_into_memory=True, hdf5_dataset_path=None)
 
 # 2: Parse the image and label lists for the training and validation datasets. This can take a while.
 
@@ -114,14 +105,14 @@ val_dataset = DataGenerator(load_images_into_memory=False, hdf5_dataset_path=Non
 images_dir      = 'datasets/kaggle/train/'
 
 # The directories that contain the annotations.
-annotations_dir      = 'datasets/mycrop/annotation/'
+annotations_dir      = 'crop/annotation/'
 
 # The paths to the image sets.
-train_image_set_filename    = 'datasets/mycrop/train_list.txt'
-val_image_set_filename      = 'datasets/mycrop/val_list.txt'
+train_image_set_filename    = 'crop/train_list.txt'
+val_image_set_filename      = 'crop/val_list.txt'
 
 # The XML parser needs to now what object class names to look for and in which order to map them to integers.
-classes = ['background','ship']
+classes = ['background','ship'] #we only have 1 (real) class: ship
 
 train_dataset.parse_xml(images_dirs=[images_dir],
                         image_set_filenames=[train_image_set_filename],
@@ -141,22 +132,6 @@ val_dataset.parse_xml(images_dirs=[images_dir],
                       exclude_difficult=True,
                       ret=False)
 
-# Optional: Convert the dataset into an HDF5 dataset. This will require more disk space, but will
-# speed up the training. Doing this is not relevant in case you activated the `load_images_into_memory`
-# option in the constructor, because in that cas the images are in memory already anyway. If you don't
-# want to create HDF5 datasets, comment out the subsequent two function calls.
-'''
-train_dataset.create_hdf5_dataset(file_path='dataset_pascal_voc_07+12_trainval.h5',
-                                  resize=False,
-                                  variable_image_size=True,
-                                  verbose=True)
-
-val_dataset.create_hdf5_dataset(file_path='dataset_pascal_voc_07_test.h5',
-                                resize=False,
-                                variable_image_size=True,
-                                verbose=True)
-'''
-
 
 # 3: Set the batch size.
 
@@ -168,6 +143,11 @@ batch_size = 8 # Change the batch size if you like, or if you run into GPU memor
 ssd_data_augmentation = SSDDataAugmentation(img_height=img_height,
                                             img_width=img_width,
                                             background=mean_color)
+#In the data_generator/data_augmentation_chain_original_ssd.py we added after:
+# self.random_flip = RandomFlip(dim='horizontal', prob=0.5, labels_format=self.labels_format)
+#another line:
+# self.random_flip = RandomFlip(dim='vertical', prob=0.5, labels_format=self.labels_format)
+#because the satellite images can be flipped vertically too
 
 # For the validation generator:
 convert_to_3_channels = ConvertTo3Channels()
