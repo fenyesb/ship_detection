@@ -12,8 +12,7 @@ DEPTH = str(3)
 
 #Load image
 def object_detection_save(image, folder_to_save):
-    #img = cv2.imread('datasets/kaggle/train/' + image + '.jpg')
-    img = cv2.imread('../../../train/' + image + '.jpg')
+    img = cv2.imread('datasets/kaggle/train/' + image + '.jpg')
     
     #Detect edges
     edges = cv2.Canny(img,150,200) #Canny Edge Detection #200 250
@@ -67,8 +66,7 @@ def object_detection_save(image, folder_to_save):
     
     ships = []
     #Load truth from xml
-    #tree = ET.parse('crop/annotation/' + image + '.xml')
-    tree = ET.parse('../../Annotation/' + image + '.xml')
+    tree = ET.parse('crop/annotation/' + image + '.xml')
     root = tree.getroot()
     for ship in root.iter('bndbox'):
         xmin = int(ship.find('xmin').text)
