@@ -83,12 +83,12 @@ model.load_weights(weights_path, by_name=True)
 #    If you want to follow the original Caffe implementation, use the preset SGD
 #    optimizer, otherwise I'd recommend the commented-out Adam optimizer.
 
-#adam = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-sgd = SGD(lr=0.001, momentum=0.9, decay=0.0, nesterov=False)
+adam = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+#sgd = SGD(lr=0.001, momentum=0.9, decay=0.0, nesterov=False)
 
 ssd_loss = SSDLoss(neg_pos_ratio=3, alpha=1.0)
 
-model.compile(optimizer=sgd, loss=ssd_loss.compute_loss)
+model.compile(optimizer=adam, loss=ssd_loss.compute_loss)
 
 # 1: Instantiate two `DataGenerator` objects: One for training, one for validation.
 
@@ -102,14 +102,14 @@ val_dataset = DataGenerator(load_images_into_memory=True, hdf5_dataset_path=None
 # TODO: Set the paths to the datasets here.
 
 # The directories that contain the images.
-images_dir      = 'datasets/kaggle/train/'
+images_dir      = 'crop/images/'
 
 # The directories that contain the annotations.
 annotations_dir      = 'crop/annotation/'
 
 # The paths to the image sets.
-train_image_set_filename    = 'crop/train_list.txt'
-val_image_set_filename      = 'crop/val_list.txt'
+train_image_set_filename    = 'crop/train_crop.txt'
+val_image_set_filename      = 'crop/val_crop.txt'
 
 # The XML parser needs to now what object class names to look for and in which order to map them to integers.
 classes = ['background','ship'] #we only have 1 (real) class: ship

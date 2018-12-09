@@ -1,0 +1,1 @@
+<annotation><folder>crop/images/</folder><filename>0f030bad6_0.jpg</filename><size><width>131</width><height>60</height><depth>3</depth></size><segmented>0</segmented><object><name>ship</name><pose>Unspecified</pose><truncated>0</truncated><difficult>0</difficult><bndbox><xmin>6</xmin><ymin>11</ymin><xmax>131</xmax><ymax>60</ymax></bndbox></object></annotation>
